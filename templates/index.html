@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Airbnb Price Prediction</title>
+    <style>
+:root {
+  --primary-color: #000;
+  --secondary-color: #f5f5f5;
+  --accent-color: #e0d4c8;
+  --text-color: #333;
+  --button-bg: #000;
+  --button-text: #fff;
+  --input-border-radius: 8px;
+  --button-border-radius: 8px;
+  --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+html {
+  scroll-behavior: smooth; /* Enables smooth scrolling for anchor links */
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  background-color: var(--secondary-color);
+}
+
+header {
+  background-color: var(--accent-color);
+  padding: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--box-shadow);
+}
+
+header h1 {
+  margin: 0;
+  color: var(--text-color);
+  font-size: 1.8rem;
+}
+
+header .book-now {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  padding: 12px 25px;
+  text-decoration: none;
+  border-radius: var(--button-border-radius);
+  font-size: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+header .book-now:hover {
+  background-color: var(--text-color);
+  color: var(--button-bg);
+}
+
+.hero {
+  background-color: var(--primary-color);
+  color: var(--button-text);
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.hero h2 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+main {
+  padding: 20px;
+  text-align: center;
+}
+
+form {
+  max-width: 800px; /* Reduced width for a smaller box */
+  margin: 0 auto;
+  background: var(--button-text);
+  padding: 30px; /* Increased padding for better spacing */
+  border-radius: var(--input-border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: var(--text-color);
+}
+
+.form-group {
+  margin-bottom: 10px;
+  text-align: left;
+}
+/* Grouping label and input for better alignment */
+form .checkbox-group,
+form .radio-group {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between the input and text */
+  margin-bottom: 15px; /* Consistent spacing between items */
+}
+
+/* Specific for the inline labels */
+form .checkbox-group label,
+form .radio-group label {
+  margin: 0; /* Remove extra margins from labels */
+  font-size: 1rem; /* Consistent font size */
+  color: var(--text-color);
+}
+
+/* Ensure checkboxes and radios align consistently */
+form input[type="checkbox"],
+form input[type="radio"] {
+  width: auto; /* Adjust size to default */
+  margin: 0; /* Remove default margin */
+}
+
+
+form label {
+  font-size: 1rem;
+  color: var(--text-color);
+  display: block;
+  margin-bottom: 5px; /* Reduced margin for compact spacing */
+}
+
+form input,
+form select {
+  display: block;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid var(--text-color);
+  border-radius: var(--input-border-radius);
+  font-size: 1rem;
+  line-height: 1.5; /* Prevents text clumping */
+}
+
+form input[type="submit"] {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  cursor: pointer;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: var(--button-border-radius);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input[type="submit"]:hover {
+  background-color: var(--text-color);
+  color: var(--button-text);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+::placeholder {
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+@media (max-width: 767px) {
+  header h1 {
+    font-size: 1.4rem;
+  }
+
+  header .book-now {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+
+  .hero {
+    padding: 60px 20px;
+  }
+
+  .hero h2 {
+    font-size: 2rem;
+  }
+
+  form {
+    max-width: 90%; /* Adjust form width for mobile */
+    padding: 20px; /* Reduce padding for smaller screens */
+  }
+
+  form input,
+  form select {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  form input[type="submit"] {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Airbnb Price Prediction</h1>
+      <a href="#prediction-form" class="book-now">Try Now</a>
+    </header>
+
+    <section class="hero">
+      <h2>Predict the price of your Airbnb listing</h2>
+    </section>
+
+    <main>
+        <form id="prediction-form" action="{{ url_for('predict') }}" method="post">
+          <h2>Predict Airbnb Price</h2>
+          
+          <div class="form-group">
+            <label for="date">Date (YYYY-MM-DD)</label>
+            <input type="date" id="date" name="date" required />
+          </div>
+      
+          <div class="form-group">
+            <label for="accommodates">Accommodates</label>
+            <input type="number" id="accommodates" name="accommodates" required min="1" placeholder="Enter number of guests" />
+          </div>
+      
+          <div class="form-group">
+            <label for="bedrooms">Bedrooms</label>
+            <input type="number" id="bedrooms" name="bedrooms" required min="0" placeholder="Enter number of bedrooms" />
+          </div>
+      
+          <div class="form-group">
+            <label for="beds">Beds</label>
+            <input type="number" id="beds" name="beds" required min="0" placeholder="Enter number of beds" />
+          </div>
+      
+          <div class="form-group">
+            <label for="room_type">Room Type</label>
+            <select id="room_type" name="room_type" required>
+              <option value="" disabled selected>Select room type</option>
+              <option value="0">Entire home/apt</option>
+              <option value="1">Hotel room</option>
+              <option value="2">Private room</option>
+              <option value="3">Shared room</option>
+            </select>
+          </div>
+      
+          <div class="form-group">
+            <label for="property_type">Property Type</label>
+            <select id="property_type" name="property_type" required>
+              <option value="" disabled selected>Select property type</option>
+              <option value="0">Boat</option>
+              <option value="1">Entire condo</option>
+              <option value="2">Entire guest suite</option>
+              <option value="3">Entire guesthouse</option>
+              <option value="4">Entire home</option>
+              <option value="5">Entire loft</option>
+              <option value="6">Entire place</option>
+              <option value="7">Entire rental unit</option>
+              <option value="8">Entire serviced apartment</option>
+              <option value="9">Entire townhouse</option>
+              <option value="10">Entire vacation home</option>
+              <option value="11">Private room</option>
+              <option value="12">Tiny home</option>
+            </select>
+          </div>
+      
+          <div class="form-group">
+            <label for="bathrooms">Bathrooms</label>
+            <input type="number" id="bathrooms" name="bathrooms" required min="0" step="0.1" placeholder="Enter number of bathrooms" />
+          </div>
+      
+          <div class="form-group">
+            <label for="latitude">Latitude</label>
+            <input type="text" id="latitude" name="latitude" required placeholder="Enter latitude" />
+          </div>
+      
+          <div class="form-group">
+            <label for="longitude">Longitude</label>
+            <input type="text" id="longitude" name="longitude" required placeholder="Enter longitude" />
+          </div>
+          <div class="form-group">
+            <label>Host is Superhost:</label>
+            <div class="checkbox-group">
+              <input type="checkbox" id="superhost" name="host_is_superhost" value="1" />
+              <label for="superhost">Yes</label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Instant Bookable:</label>
+            <div class="checkbox-group">
+              <input type="checkbox" id="instant_bookable" name="instant_bookable" value="1" />
+              <label for="instant_bookable">Yes</label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Host Verifications:</label>
+            <div class="radio-group">
+              <input type="radio" id="verification1" name="host_verifications" value="0" required />
+              <label for="verification1">Email, Phone, Work Email</label>
+            </div>
+            <div class="radio-group">
+              <input type="radio" id="verification2" name="host_verifications" value="1" />
+              <label for="verification2">Email, Phone</label>
+            </div>
+            <div class="radio-group">
+              <input type="radio" id="verification3" name="host_verifications" value="2" />
+              <label for="verification3">Phone, Work Email</label>
+            </div>
+            <div class="radio-group">
+              <input type="radio" id="verification4" name="host_verifications" value="3" />
+              <label for="verification4">Phone</label>
+            </div>
+          </div>
+      
+          <div class="form-group">
+            <label for="number_of_reviews">Number of Reviews</label>
+            <input type="number" id="number_of_reviews" name="number_of_reviews" required min="0" placeholder="Enter number of reviews" />
+          </div>
+      
+          <div class="form-group">
+            <input type="submit" value="Predict" />
+          </div>
+        </form>
+        {% if prediction_text %}
+        <h3>{{ prediction_text }}</h3>
+    {% endif %}
+      </main>
+      
+  </body>
+</html>
