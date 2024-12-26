@@ -29,3 +29,6 @@ The dynamic nature of the rental market, with fluctuating prices due to seasonal
 - **Scikit-Learn**: Provides machine learning tools to train and evaluate the RandomForest model.
 - **Statsmodels**: Used for building and fitting the SARIMA model for time-series analysis.
 - **Joblib**: Utilized for model serialization and deserialization, allowing for efficient storage and retrieval of the predictive models.
+
+![AE905977-3B2A-4D9A-A079-BCC6F380EE21](https://github.com/user-attachments/assets/fa5c0ee9-1762-49f9-8cf6-31a7ebd44896)
+
